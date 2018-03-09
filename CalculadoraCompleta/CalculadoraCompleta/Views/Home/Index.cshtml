@@ -12,11 +12,54 @@
 </head>
 <body>
     <div>
-        <h1 style="color:red" >CALCULADORA</h1>
+        <h1 style="color:red">CALCULADORA</h1>
         <!-- Este objeto envia os dados do formulario para o servidor-->
         <!-- Este comentario aparece no cliente (browser)-->
         @* Mas este comentario ja nao aparece! *@
         <form method="post">
+
+            <table border="1">
+                <tr>
+                    <!--linha-->
+                    <td colspan="5">
+                        <!--coluna-->
+                        <input type="text" name="visor" readonly />
+                    </td>
+                </tr>
+                <!--................................................-->
+                <tr>
+                    <td> <input type="submit" value="7" name="bt" /> </td>
+                    <td> <input type="submit" value="8" name="bt" /> </td>
+                    <td> <input type="submit" value="9" name="bt" /> </td>
+                    <td> <input type="submit" value=":" name="bt" /> </td>
+                    <td> <input type="submit" value="+/-" name="bt" /> </td>
+                </tr>
+                <!--................................................-->
+                <tr>
+                    <td> <input type="submit" value="4" name="bt" /> </td>
+                    <td> <input type="submit" value="5" name="bt" /> </td>
+                    <td> <input type="submit" value="6" name="bt" /> </td>
+                    <td> <input type="submit" value="x" name="bt" /> </td>
+                    <td> <input type="submit" value="C" name="bt" /> </td>
+                </tr>
+                <!--................................................-->
+                <tr>
+                    <td> <input type="submit" value="1" name="bt" /> </td>
+                    <td> <input type="submit" value="2" name="bt" /> </td>
+                    <td> <input type="submit" value="3" name="bt" /> </td>
+                    <td> <input type="submit" value="-" name="bt" /> </td>
+                    <td rowspan="2"> <input type="submit" value="=" name="bt" /> </td>
+                </tr>
+                <!--................................................-->
+                <tr>
+                    <td colspan="2"> <input type="submit" value="0" name="bt" /> </td>
+                    <td> <input type="submit" value="," name="bt" /> </td>
+                    <td> <input type="submit" value="+" name="bt" /> </td>
+                </tr>
+                <!--................................................-->
+
+
+            </table>
 
         </form>
 
