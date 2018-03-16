@@ -15,17 +15,17 @@ namespace CalculadoraCompleta.Controllers
         {
             //inicializar o valor do visor
             ViewBag.Visor = 0;
+            //inicializar variaveis de formatacao da calculadora
+            Session["primeirooperador"] = true;
+            //marcar o visor para limpeza
+            Session["limpezaVisor"] = true;
             return View();
         }
 
-        int operandoaux;
-        int operandoactual;
-        string operador="";
         // POST: Home
         [HttpPost]
         public ActionResult Index(string bt, string visor)
         {
-            int resultado = 0;
             //identificar o valor da variavel "bt"
             switch (bt)
             {
@@ -38,67 +38,73 @@ namespace CalculadoraCompleta.Controllers
                 case "7":
                 case "8":
                 case "9":
-                    if (visor.Length <= 12)
-                    {
-                        if (visor.Equals("0")) visor = bt;
-                        else visor += bt;
-                    }
-                    break;
                 case "0":
                     if (visor.Length <= 12)
                     {
-                        if (visor.IndexOf(",") == (1)) //se tiver virgula...
-                        {
-                            visor += bt;  //verificar se contem virgula(IndexOf se nao existir ',' tem '-1' como valor, e '1' se tiver) 
-                        }
-                        else
-                        {
-                            if (visor.Equals("0")) //se o display estiver a zero...
-                            {
-                                visor = "0";
-                            }
-                            else visor += bt;           //escrever um zero no display...
-                        }
+                        if ((bool)Session["limpezaVisor"] || visor.Equals("0")) visor = bt;
+                        else visor += bt;
                     }
+                    //impedir limpeza do visor/display
+                    Session["limpezaVisor"] = false;
                     break;
                 //-------------------------------------------------------------
-                case "/":
-                case "*":
+                case ":":
+                case "x":
                 case "-":
                 case "+":
-                    operandoaux = Int32.Parse(visor);
-                    visor = "0";
-                    operador = "+";                              //guardar o operador
-                    break;
-                case "=":
-                    operandoactual = Int32.Parse(visor);
-                    switch (operador)
+                    //executo este codigo, porque e a primeira vez da escolha do operador
+                    if (!(bool)Session["primeirooperador"]) // se nao for a primeira vez que escolho um operador...
                     {
-                        case "+": resultado = operandoaux + operandoactual; break; //soma
-                        case "-": resultado = operandoaux - operandoactual; break; //sub
-                        case "x": resultado = operandoaux * operandoactual; break; //mult
-                        case ":": resultado = operandoaux / operandoactual; break; //div
+                        //variaveis auxiliares
+                        double operando1 = Convert.ToDouble((string)Session["operando"]);
+                        double operando2 = Convert.ToDouble(visor);
+
+                        switch (Session["operadoranterior"]) //se der bug... usar cast-> (string)Session["operadoranterior"]
+                        {
+                            case "+":
+                                visor = operando1 + operando2 + "";
+                                break;
+                            case "-":
+                                visor = operando1 - operando2 + "";
+                                break;
+                            case "x":
+                                visor = operando1 * operando2 + "";
+                                break;
+                            case ":":
+                                visor = operando1 / operando2 + "";
+                                break;
+                        }
+
+                        //guardar dados para a operacao seguinte
+                        Session["operadoranterior"] = bt;
+                        Session["primeirooperador"] = false;
+                        Session["operando"] = visor;
+                        Session["limpezaVisor"] = true;        //marcar o visor para limpeza
+
+                        //tratar da situacao do igual("=")
+                        if (bt.Equals("="))
+                        {//se o botao for o igual...
+                            Session["primeirooperador"] = true;
+                        }
+                        break;
                     }
-                    visor = resultado.ToString();
                     break;
                 //--------------------------------------------------------------
                 case "C":
-                    visor = "0";
+                    visor = "0"; //limpar visor
+                    //reiniciar variaveis
+                    //inicializar variaveis de formatacao da calculadora
+                    Session["primeirooperador"] = true;
+                    //marcar o visor para limpeza
+                    Session["limpezaVisor"] = true;
                     break;
                 case "+/-":
-                    if (visor.Length <= 12)
-                    {
-                        if (visor != ("0"))
-                        {
-                            if (visor[0].ToString() != ("-")) visor = "-" + visor;
-                            else visor = visor.Substring(1);
-                            break;
-                        }
-                    }
+                    visor = Convert.ToDouble(visor) * -1 + "";    //converte para double e depois converte para string no final
                     break;
+                    
                 case ",":
-                    if (visor.IndexOf(",") == (-1))  //verificar se contem virgula(IndexOf se nao existir ',' tem '-1' como valor, e '1' se tiver)
-                        visor += ",";
+                    if(!visor.Contains(","))  //se nao tiver virgula...
+                      visor += ";";
                     break;
             }
             //enviar resposta para cliente
