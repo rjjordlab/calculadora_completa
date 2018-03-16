@@ -9,52 +9,107 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Calculadora</title>
+    <style>
+        table {                           @* tabela geral*@
+            
+            background-color: white;
+            margin-left: auto;
+            margin-right: auto;
+            width: 400px;
+        }
+        td#title {                      @* linha do titulo da tabela e o seu conteudo(texto) *@
+            background-color: black;
+            font-family: Consolas;
+            color: white;
+            font-size: 20px;
+            border: dotted;
+        }
+        .display_visor {                @* linha do display / visor*@
+            background-color: white;
+            height: 100%;
+            width: 100%;
+            text-align: right;
+            font-size: 50px;
+            border-style:none;
+        }
+
+        td {                           @* celulas da tabela *@
+            text-align: center;
+            width: 20%;
+            position: relative;
+            border-style:solid;
+        }
+
+        .botao, .botaoigual, .botaozero {  @* definicoes e largura dos botoes com o botao zero incluido devido ser 100% *@
+            padding: 0;
+            border: none;
+            background: none;
+            width: 100%;
+            font-size: 30px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        .botao, .botaozero {           @* altura dos botoes normais e do zero *@
+            height: 80px;
+        }
+        .botaoigual {                  @* altura do botao igual *@
+            height: 160px;
+        }
+
+        
+    </style>
 </head>
 <body>
     <div>
-        <h1 style="color:red">CALCULADORA</h1>
+
         <!-- Este objeto envia os dados do formulario para o servidor-->
         <!-- Este comentario aparece no cliente (browser)-->
         @* Mas este comentario ja nao aparece! *@
         <form method="post">
 
-            <table border="1">
+            <table>
                 <tr>
                     <!--linha-->
-                    <td colspan="5">
-                        <!--coluna-->
-                        <input type="text" name="visor" value="@ViewBag.Visor" readonly />
+                    <td colspan="5" id="title">
+                        <h1>CALCULADORA</h1>
                     </td>
                 </tr>
                 <!--................................................-->
                 <tr>
-                    <td> <input type="submit" value="7" name="bt" /> </td>
-                    <td> <input type="submit" value="8" name="bt" /> </td>
-                    <td> <input type="submit" value="9" name="bt" /> </td>
-                    <td> <input type="submit" value=":" name="bt" /> </td>
-                    <td> <input type="submit" value="+/-" name="bt" /> </td>
+                    <td colspan="5">
+                        <!--coluna-->
+                        <input type="text" class="display_visor" name="visor" value="@ViewBag.Visor" readonly />
+                    </td>
                 </tr>
                 <!--................................................-->
                 <tr>
-                    <td> <input type="submit" value="4" name="bt" /> </td>
-                    <td> <input type="submit" value="5" name="bt" /> </td>
-                    <td> <input type="submit" value="6" name="bt" /> </td>
-                    <td> <input type="submit" value="x" name="bt" /> </td>
-                    <td> <input type="submit" value="C" name="bt" /> </td>
+                    <td> <input type="submit" value="7" name="bt" class="botao" /> </td>
+                    <td> <input type="submit" value="8" name="bt" class="botao"/> </td>
+                    <td> <input type="submit" value="9" name="bt" class="botao"/> </td>
+                    <td> <input type="submit" value=":" name="bt" class="botao"/> </td>
+                    <td> <input type="submit" value="+/-" name="bt" class="botao"/> </td>
                 </tr>
                 <!--................................................-->
                 <tr>
-                    <td> <input type="submit" value="1" name="bt" /> </td>
-                    <td> <input type="submit" value="2" name="bt" /> </td>
-                    <td> <input type="submit" value="3" name="bt" /> </td>
-                    <td> <input type="submit" value="-" name="bt" /> </td>
-                    <td rowspan="2"> <input type="submit" value="=" name="bt" /> </td>
+                    <td> <input type="submit" value="4" name="bt" class="botao"/> </td>
+                    <td> <input type="submit" value="5" name="bt" class="botao"/> </td>
+                    <td> <input type="submit" value="6" name="bt" class="botao"/> </td>
+                    <td> <input type="submit" value="x" name="bt" class="botao"/> </td>
+                    <td> <input type="submit" value="C" name="bt" class="botao"/> </td>
                 </tr>
                 <!--................................................-->
                 <tr>
-                    <td colspan="2"> <input type="submit" value="0" name="bt" /> </td>
-                    <td> <input type="submit" value="," name="bt" /> </td>
-                    <td> <input type="submit" value="+" name="bt" /> </td>
+                    <td> <input type="submit" value="1" name="bt" class="botao"/> </td>
+                    <td> <input type="submit" value="2" name="bt" class="botao"/> </td>
+                    <td> <input type="submit" value="3" name="bt" class="botao"/> </td>
+                    <td> <input type="submit" value="-" name="bt" class="botao"/> </td>
+                    <td rowspan="2" > <input type="submit" value="=" name="bt" class="botaoigual"/> </td>
+                </tr>
+                <!--................................................-->
+                <tr>
+                    <td colspan="2"> <input type="submit" value="0" name="bt" class="botaozero"/> </td>
+                    <td> <input type="submit" value="," name="bt" class="botao"/> </td>
+                    <td> <input type="submit" value="+" name="bt" class="botao"/> </td>
                 </tr>
                 <!--................................................-->
 
@@ -62,7 +117,6 @@
             </table>
 
         </form>
-
     </div>
 </body>
 </html>
