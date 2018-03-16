@@ -9,16 +9,20 @@ namespace CalculadoraCompleta.Controllers
     public class HomeController : Controller
     {
 
+        // neste tipo de aplicação, isto não funciona
+        // public bool primeiroOperador = true;
+
         // GET: Home
-        [HttpGet] //anotacao opcional, por defeito e GET:Home
+        [HttpGet]  // esta anotação é facultativa, pois, por defeito, é isto que acontece
         public ActionResult Index()
         {
-            //inicializar o valor do visor
+            // inicializar o valor do visor
             ViewBag.Visor = 0;
-            //inicializar variaveis de formatacao da calculadora
-            Session["primeirooperador"] = true;
-            //marcar o visor para limpeza
-            Session["limpezaVisor"] = true;
+            // inicializar variáveis de formatação da calculadora
+            Session["primeiroOperador"] = true;
+            // marcar o visor para limpeza
+            Session["limpaVisor"] = true;
+
             return View();
         }
 
@@ -26,7 +30,8 @@ namespace CalculadoraCompleta.Controllers
         [HttpPost]
         public ActionResult Index(string bt, string visor)
         {
-            //identificar o valor da variavel "bt"
+
+            // identificar o valor da variável 'bt'
             switch (bt)
             {
                 case "1":
@@ -39,27 +44,36 @@ namespace CalculadoraCompleta.Controllers
                 case "8":
                 case "9":
                 case "0":
-                    if (visor.Length <= 12)
-                    {
-                        if ((bool)Session["limpezaVisor"] || visor.Equals("0")) visor = bt;
-                        else visor += bt;
-                    }
-                    //impedir limpeza do visor/display
-                    Session["limpezaVisor"] = false;
+                    if ((bool)Session["limpaVisor"] ||
+                       visor.Equals("0")) visor = bt;
+                    else visor += bt;
+
+                    // impedir o visor de ser limpo
+                    Session["limpaVisor"] = false;
+
                     break;
-                //-------------------------------------------------------------
-                case ":":
-                case "x":
-                case "-":
+
+                case "+/-":
+                    visor = Convert.ToDouble(visor) * -1 + "";
+                    break;
+
+                case ",":
+                    if (!visor.Contains(",")) visor += bt;
+                    break;
+
                 case "+":
-                    //executo este codigo, porque e a primeira vez da escolha do operador
-                    if (!(bool)Session["primeirooperador"]) // se nao for a primeira vez que escolho um operador...
+                case "-":
+                case "x":
+                case ":":
+                case "=":
+                    // executar se NÃO é a primeira vez que escolho um operador
+                    if (!(bool)Session["primeiroOperador"])
                     {
-                        //variaveis auxiliares
+                        // vars auxiliares
                         double operando1 = Convert.ToDouble((string)Session["operando"]);
                         double operando2 = Convert.ToDouble(visor);
 
-                        switch (Session["operadoranterior"]) //se der bug... usar cast-> (string)Session["operadoranterior"]
+                        switch ((string)Session["operadorAnterior"])
                         {
                             case "+":
                                 visor = operando1 + operando2 + "";
@@ -74,42 +88,43 @@ namespace CalculadoraCompleta.Controllers
                                 visor = operando1 / operando2 + "";
                                 break;
                         }
-
-                        //guardar dados para a operacao seguinte
-                        Session["operadoranterior"] = bt;
-                        Session["primeirooperador"] = false;
-                        Session["operando"] = visor;
-                        Session["limpezaVisor"] = true;        //marcar o visor para limpeza
-
-                        //tratar da situacao do igual("=")
-                        if (bt.Equals("="))
-                        {//se o botao for o igual...
-                            Session["primeirooperador"] = true;
-                        }
-                        break;
                     }
-                    break;
-                //--------------------------------------------------------------
-                case "C":
-                    visor = "0"; //limpar visor
-                    //reiniciar variaveis
-                    //inicializar variaveis de formatacao da calculadora
-                    Session["primeirooperador"] = true;
-                    //marcar o visor para limpeza
-                    Session["limpezaVisor"] = true;
-                    break;
-                case "+/-":
-                    visor = Convert.ToDouble(visor) * -1 + "";    //converte para double e depois converte para string no final
+
+                    // guardar dados, para a operação seguinte
+                    Session["operadorAnterior"] = bt;
+                    Session["primeiroOperador"] = false;
+                    Session["operando"] = visor;
+                    // marcar o visor para limpeza
+                    Session["limpaVisor"] = true;
+
+                    // tratar da situação do operador '='
+                    if (bt.Equals("="))
+                    {
+                        Session["primeiroOperador"] = true;
+                    }
+
                     break;
 
-                case ",":
-                    if (!visor.Contains(","))  //se nao tiver virgula...
-                        visor += ";";
+                case "C":
+                    // limpar visor
+                    visor = "0";
+                    // reiniciar vars. sessão
+                    // inicializar variáveis de formatação da calculadora
+                    Session["primeiroOperador"] = true;
+                    // marcar o visor para limpeza
+                    Session["limpaVisor"] = true;
+
                     break;
-            }
-            //enviar resposta para cliente
+
+            } // switch (bt)
+
+            // enviar resposta para o cliente
             ViewBag.Visor = visor;
+
+
             return View();
         }
+
+
     }
 }
