@@ -101,10 +101,10 @@ namespace CalculadoraCompleta.Controllers
                 case "+/-":
                     visor = Convert.ToDouble(visor) * -1 + "";    //converte para double e depois converte para string no final
                     break;
-                    
+
                 case ",":
-                    if(!visor.Contains(","))  //se nao tiver virgula...
-                      visor += ";";
+                    if (!visor.Contains(","))  //se nao tiver virgula...
+                        visor += ";";
                     break;
             }
             //enviar resposta para cliente

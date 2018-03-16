@@ -9,20 +9,18 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Calculadora</title>
+    <link href="~/CSS/bootstrap.css" rel="stylesheet" />
     <style>
         table {                           @* tabela geral*@
-            
             background-color: white;
             margin-left: auto;
             margin-right: auto;
             width: 400px;
         }
         td#title {                      @* linha do titulo da tabela e o seu conteudo(texto) *@
-            background-color: black;
-            font-family: Consolas;
-            color: white;
+            color: black;
+            background-color:white;
             font-size: 20px;
-            border: dotted;
         }
         .display_visor {                @* linha do display / visor*@
             background-color: white;
@@ -78,7 +76,7 @@
                 <tr>
                     <td colspan="5">
                         <!--coluna-->
-                        <input type="text" class="display_visor" name="visor" value="@ViewBag.Visor" readonly />
+                        <input type="text" class="display_visor" name="visor" value="@ViewBag.Visor" readonly="readonly" />
                     </td>
                 </tr>
                 <!--................................................-->
