@@ -18,9 +18,9 @@ namespace CalculadoraCompleta.Controllers
             return View();
         }
 
-        int operandoaux = 0;
-        int operandoactual = 0;
-        string operador = "";
+        int operandoaux;
+        int operandoactual;
+        string operador="";
         // POST: Home
         [HttpPost]
         public ActionResult Index(string bt, string visor)
@@ -66,12 +66,12 @@ namespace CalculadoraCompleta.Controllers
                 case "*":
                 case "-":
                 case "+":
-                    operandoaux = Convert.ToInt32(visor);      //ao carregar num operador, guarda o valor do display numa variavel, metendo o display a zero
-                    operador = bt;                              //guardar o operador
+                    operandoaux = Int32.Parse(visor);
                     visor = "0";
+                    operador = "+";                              //guardar o operador
                     break;
                 case "=":
-                    operandoactual = Convert.ToInt32(visor);
+                    operandoactual = Int32.Parse(visor);
                     switch (operador)
                     {
                         case "+": resultado = operandoaux + operandoactual; break; //soma
@@ -103,9 +103,6 @@ namespace CalculadoraCompleta.Controllers
             }
             //enviar resposta para cliente
             ViewBag.Visor = visor;
-
-
-
             return View();
         }
     }
